@@ -1,5 +1,9 @@
 # FastChat-GKE
 
+## Prepare LLM models
+- [FastChat](https://github.com/lm-sys/FastChat/tree/05b3bcdea6ac5106e8ef4a57f7f27a36ccaca253#api)
+- [Chinese-LLaMA-Alpaca](https://github.com/ymcui/Chinese-LLaMA-Alpaca)
+
 ## Initialize the environment
 ```
 export PROJECT=$(gcloud info --format='value(config.project)')
@@ -18,20 +22,20 @@ export FILESHARE_NAME=<replace with filestore share name>
 export BUILD_REGIST=<replace this with your preferred Artifacts repo name>
 ```
 
-## Create a Filestore instance
+## Filestore instance
+#### Enable API
+```
+gcloud services enable file.googleapis.com
+```
+
+#### Create a Filestore instance
 Use the below commands to create a Filestore instance to store llm model .
 ```
 gcloud filestore instances create ${FILESTORE_NAME} --zone=${FILESTORE_ZONE} --tier=BASIC_HDD --file-share=name=${FILESHARE_NAME},capacity=1TB --network=name=${VPC_NETWORK}
 ```
+#### Attach Filestore to your VM
 
-
-## Prepare LLM models
-- [FastChat](https://github.com/lm-sys/FastChat/tree/05b3bcdea6ac5106e8ef4a57f7f27a36ccaca253#api)
-- [Chinese-LLaMA-Alpaca](https://github.com/ymcui/Chinese-LLaMA-Alpaca)
-
-
-## Copy LLM models to Filestore
-attach Filestore to your vm and copy LLM Models to it.
+#### Copy LLM models to Filestore
 
 
 ## Enable APIs
