@@ -92,8 +92,7 @@ kubectl get svc gui-svc
 ```
 2. Open browser and input external ip address
 
-## Test OpenAI-Compatible RESTful APIs & SDK
+## Test [OpenAI-Compatible RESTful APIs & SDK](https://github.com/lm-sys/FastChat/blob/05b3bcdea6ac5106e8ef4a57f7f27a36ccaca253/docs/openai_api.md)
 ```
 kubectl get svc api
 ```
-[link](https://github.com/lm-sys/FastChat/blob/05b3bcdea6ac5106e8ef4a57f7f27a36ccaca253/docs/openai_api.md)
