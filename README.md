@@ -34,6 +34,13 @@ Use the below commands to create a Filestore instance to store llm model .
 gcloud filestore instances create ${FILESTORE_NAME} --zone=${ZONE} --tier=BASIC_HDD --file-share=name=${FILESHARE_NAME},capacity=1TB --network=name=${VPC_NETWORK}
 ```
 #### Attach Filestore to your VM
+```
+sudo apt-get -y update &&
+sudo apt-get -y install nfs-common
+sudo mkdir /data
+sudo chown -R $USER /data
+sudo mount your_filestore_ip_address:/${FILESHARE_NAME} /data
+```
 
 #### Copy LLM models to Filestore
 
@@ -50,7 +57,7 @@ gcloud container clusters create ${GKE_CLUSTER_NAME} \
     --machine-type "n1-standard-4" \
     --accelerator "type=nvidia-tesla-t4,count=2" \
     --addons HorizontalPodAutoscaling,HttpLoadBalancing,GcePersistentDiskCsiDriver,GcpFilestoreCsiDriver \
-    --region ${REGION}
+    --zone ${ZONE}
 ```
 
 
@@ -63,19 +70,11 @@ kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/container
 
 ## Create Cloud Artifacts as Docker Repo
 ```
-gcloud artifacts repositories create ${BUILD_REGIST} --repository-format=docker \
---location=${REGION}
+gcloud artifacts repositories create ${BUILD_REGIST} --repository-format=docker --location=${REGION}
 ```
 
-
 ## Build FastChat Image
-Build image with provided Dockerfile, push to repo in Cloud Artifacts \
-Please note I have prepared two seperate Dockerfiles for inference and training, for inference, we don't include dreambooth extension for training.
-
-```shell
-cd docker
-
-# Build Docker image locally (machine with at least 8GB memory avaliable)
+```
 gcloud auth configure-docker ${REGION}-docker.pkg.dev
 docker build . -t ${REGION}-docker.pkg.dev/${PROJECT_ID}/${BUILD_REGIST}/fastchat:v1
 docker push ${REGION}-docker.pkg.dev/${PROJECT_ID}/${BUILD_REGIST}/fastchat:v1
