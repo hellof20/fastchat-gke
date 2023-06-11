@@ -22,11 +22,12 @@ export FILESHARE_NAME=<replace with filestore share name>
 export BUILD_REGIST=<replace this with your preferred Artifacts repo name>
 ```
 
+## Enable APIs
+```
+gcloud services enable compute.googleapis.com artifactregistry.googleapis.com container.googleapis.com file.googleapis.com
+```
+
 ## Filestore instance
-#### Enable API
-```
-gcloud services enable file.googleapis.com
-```
 
 #### Create a Filestore instance
 Use the below commands to create a Filestore instance to store llm model .
@@ -36,12 +37,6 @@ gcloud filestore instances create ${FILESTORE_NAME} --zone=${FILESTORE_ZONE} --t
 #### Attach Filestore to your VM
 
 #### Copy LLM models to Filestore
-
-
-## Enable APIs
-```
-gcloud services enable compute.googleapis.com artifactregistry.googleapis.com container.googleapis.com file.googleapis.com
-```
 
 
 ## Create GKE cluster
