@@ -15,7 +15,6 @@ export VPC_SUBNETWORK=<the name of your subnetwork>
 
 # Filestore
 export FILESTORE_NAME=<replace with filestore instance name>
-export FILESTORE_ZONE=<replace with filestore instance zone>
 export FILESHARE_NAME=<replace with filestore share name>
 
 # Artifact Repo
@@ -32,7 +31,7 @@ gcloud services enable compute.googleapis.com artifactregistry.googleapis.com co
 #### Create a Filestore instance
 Use the below commands to create a Filestore instance to store llm model .
 ```
-gcloud filestore instances create ${FILESTORE_NAME} --zone=${FILESTORE_ZONE} --tier=BASIC_HDD --file-share=name=${FILESHARE_NAME},capacity=1TB --network=name=${VPC_NETWORK}
+gcloud filestore instances create ${FILESTORE_NAME} --zone=${ZONE} --tier=BASIC_HDD --file-share=name=${FILESHARE_NAME},capacity=1TB --network=name=${VPC_NETWORK}
 ```
 #### Attach Filestore to your VM
 
