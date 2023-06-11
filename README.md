@@ -76,7 +76,7 @@ gcloud artifacts repositories create ${BUILD_REGIST} --repository-format=docker 
 ## Build FastChat Image
 ```
 gcloud auth configure-docker ${REGION}-docker.pkg.dev
-docker build . -t ${REGION}-docker.pkg.dev/${PROJECT_ID}/${BUILD_REGIST}/fastchat:v1
+docker build -t ${REGION}-docker.pkg.dev/${PROJECT_ID}/${BUILD_REGIST}/fastchat:v1 docker/
 docker push ${REGION}-docker.pkg.dev/${PROJECT_ID}/${BUILD_REGIST}/fastchat:v1
 ```
 
