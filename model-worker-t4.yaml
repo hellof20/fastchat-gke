@@ -30,7 +30,7 @@ spec:
           - --host
           - "0.0.0.0"
           - --controller 
-          - http://controller-svc:21001 
+          - http://controller-svc:21001
           - --worker-address 
           - http://model-worker-svc:21002
           - --max-gpu-memory 

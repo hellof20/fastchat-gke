@@ -13,10 +13,10 @@ spec:
   volumeMode: Filesystem
   csi:
     driver: filestore.csi.storage.gke.io
-    volumeHandle: "modeInstance/asia-southeast1/my-nfs/mynfs"
+    volumeHandle: "modeInstance/asia-southeast1/mynfs/mydata"
     volumeAttributes:
-      ip: 192.168.189.2
-      volume: mynfs
+      ip: 10.45.193.242
+      volume: mydata
 
 ---
 kind: PersistentVolumeClaim
