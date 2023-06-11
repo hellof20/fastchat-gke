@@ -84,7 +84,14 @@ docker push ${REGION}-docker.pkg.dev/${PROJECT_ID}/${BUILD_REGIST}/fastchat:v1
 ## Deploy FastChat
 #### FastChat include controller, worker, gui and rest api.
 ```
-kubectl apply -f .
+kubectl apply -f filstore-pv-pvc.yaml
+kubectl apply -f controller.yaml
+kubectl apply -f model-worker-t4.yaml
+```
+check worker pod log and after load model success.
+```
+kubectl apply -f gui.yaml
+kubectl apply -f api.yaml
 ```
 
 
@@ -100,6 +107,7 @@ kubectl get pod
 kubectl get svc gui-svc
 ```
 2. Open browser and input external ip address
+![image](https://github.com/hellof20/fastchat-gke/assets/8756642/b8d7ac9a-ec64-4630-bbcf-47d22566f101)
 
 
 ## Test [OpenAI-Compatible RESTful APIs & SDK](https://github.com/lm-sys/FastChat/blob/05b3bcdea6ac5106e8ef4a57f7f27a36ccaca253/docs/openai_api.md)
