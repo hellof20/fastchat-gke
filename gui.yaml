@@ -26,6 +26,8 @@ spec:
           - http://controller-svc:21001        
         ports:
         - containerPort: 7860
+      nodeSelector:
+        cloud.google.com/gke-nodepool: default-pool        
 
 ---
 apiVersion: v1
