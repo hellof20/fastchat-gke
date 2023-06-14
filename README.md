@@ -45,7 +45,7 @@ sudo mount your_filestore_ip_address:/${FILESHARE_NAME} /data
 #### Copy LLM models to Filestore
 
 
-## Create GKE cluster with Tesla T4
+## Create GKE cluster
 ```
 gcloud container clusters create ${GKE_CLUSTER_NAME} \
     --network ${VPC_NETWORK} \
@@ -54,14 +54,24 @@ gcloud container clusters create ${GKE_CLUSTER_NAME} \
     --image-type "UBUNTU_CONTAINERD" \
     --num-nodes 1 \
     --enable-autoscaling --total-min-nodes "1" --total-max-nodes "2" --location-policy "BALANCED" \
-    --machine-type "n1-standard-4" \
-    --accelerator "type=nvidia-tesla-t4,count=2" \
+    --machine-type "n2-standard-4" \
     --addons HorizontalPodAutoscaling,HttpLoadBalancing,GcePersistentDiskCsiDriver,GcpFilestoreCsiDriver \
     --region ${REGION} \
     --node-locations ${ZONE}
 ```
 
+## Use T4 GPU
+```
+gcloud container node-pools create t4 \
+  --machine-type "n1-standard-4" \
+  --image-type "UBUNTU_CONTAINERD" \
+  --accelerator type=nvidia-tesla-t4,count=2 \
+  --region ${REGION} --node-locations ${ZONE} --cluster ${GKE_CLUSTER_NAME} \
+  --num-nodes 1 --min-nodes 1 --max-nodes 2 --enable-autoscaling
+```
+
 ## Use L4 GPU (optional)
+
 ```
 gcloud container node-pools create l4 \
   --machine-type "g2-standard-4" \
@@ -72,11 +82,9 @@ gcloud container node-pools create l4 \
 ```
 
 ## Install NVIDIA GPU device drivers
-After creating a GKE cluster with GPU, you need to install NVIDIA's device drivers on the nodes. Google provides a DaemonSet that you can apply to install the drivers. To deploy the installation [DaemonSet](https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/ubuntu/daemonset-preloaded.yaml) and install the default GPU driver version, run the following command:
 ```
-kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/ubuntu/daemonset-preloaded.yaml
+kubeclt apply -f nvidia-driver-latest.yaml
 ```
-
 
 ## Create Cloud Artifacts as Docker Repo
 ```
@@ -98,10 +106,19 @@ kubectl apply -f filstore-pv-pvc.yaml
 ```
 
 #### FastChat include controller, worker, gui and rest api.
+Create controller
+```
+kubectl apply -f controller.yaml
 ```
 
-kubectl apply -f controller.yaml
+If you have create T4 GPU node pool
+```
 kubectl apply -f model-worker-t4.yaml
+```
+
+If you have create L4 GPU node pool
+```
+kubectl apply -f model-worker-l4.yaml
 ```
 check worker pod log and after load model success.
 ```
