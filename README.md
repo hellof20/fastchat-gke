@@ -92,9 +92,14 @@ docker push ${REGION}-docker.pkg.dev/${PROJECT_ID}/${BUILD_REGIST}/fastchat:v1
 
 
 ## Deploy FastChat
-#### FastChat include controller, worker, gui and rest api.
+#### replace filestore ip address and 
 ```
 kubectl apply -f filstore-pv-pvc.yaml
+```
+
+#### FastChat include controller, worker, gui and rest api.
+```
+
 kubectl apply -f controller.yaml
 kubectl apply -f model-worker-t4.yaml
 ```
