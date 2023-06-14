@@ -120,14 +120,18 @@ If you have create L4 GPU node pool
 ```
 kubectl apply -f model-worker-l4.yaml
 ```
-check worker pod log and after load model success.
+
+Create GUI
 ```
 kubectl apply -f gui.yaml
+```
+
+Create API
+```
 kubectl apply -f api.yaml
 ```
 
-
-#### Check pod status
+#### Check pod status 
 ```
 kubectl get pod
 ```
