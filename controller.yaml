@@ -28,6 +28,8 @@ spec:
           - "21001"
         ports:
         - containerPort: 21001
+      nodeSelector:
+        cloud.google.com/gke-nodepool: default-pool
 
 ---
 
