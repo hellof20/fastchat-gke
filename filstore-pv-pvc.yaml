@@ -13,10 +13,10 @@ spec:
   volumeMode: Filesystem
   csi:
     driver: filestore.csi.storage.gke.io
-    volumeHandle: "modeInstance/asia-southeast1/mynfs/mydata"
+    volumeHandle: "modeInstance/asia-southeast1/${FILESTORE_NAME}/${FILESHARE_NAME}"
     volumeAttributes:
-      ip: 10.45.193.242
-      volume: mydata
+      ip: ${FILESHARE_IP_ADDRESS}
+      volume: ${FILESHARE_NAME}
 
 ---
 kind: PersistentVolumeClaim

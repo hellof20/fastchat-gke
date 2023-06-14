@@ -41,11 +41,11 @@ spec:
         - containerPort: 21002
         resources:
           requests:
-            nvidia.com/gpu: 2
+            nvidia.com/gpu: 1
           limits:
-            nvidia.com/gpu: 2
+            nvidia.com/gpu: 1
       nodeSelector:
-        cloud.google.com/gke-accelerator: nvidia-tesla-t4
+        cloud.google.com/gke-accelerator: nvidia-l4            
       volumes:
       - name: models-vol
         persistentVolumeClaim:
