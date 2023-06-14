@@ -45,26 +45,36 @@ sudo mount your_filestore_ip_address:/${FILESHARE_NAME} /data
 #### Copy LLM models to Filestore
 
 
-## Create GKE cluster
+## Create GKE cluster with Tesla T4
 ```
 gcloud container clusters create ${GKE_CLUSTER_NAME} \
     --network ${VPC_NETWORK} \
     --release-channel "None" \
-    --cluster-version "1.25.8-gke.500" \
-    --image-type "COS_CONTAINERD" \
+    --cluster-version "1.25.9-gke.2300" \
+    --image-type "UBUNTU_CONTAINERD" \
     --num-nodes 1 \
     --enable-autoscaling --total-min-nodes "1" --total-max-nodes "2" --location-policy "BALANCED" \
     --machine-type "n1-standard-4" \
     --accelerator "type=nvidia-tesla-t4,count=2" \
     --addons HorizontalPodAutoscaling,HttpLoadBalancing,GcePersistentDiskCsiDriver,GcpFilestoreCsiDriver \
-    --zone ${ZONE}
+    --region ${REGION} \
+    --node-locations ${ZONE}
 ```
 
+## Use L4 GPU (optional)
+```
+gcloud container node-pools create l4 \
+  --machine-type "g2-standard-4" \
+  --image-type "UBUNTU_CONTAINERD" \
+  --accelerator type=nvidia-l4,count=1 \
+  --region ${REGION} --node-locations ${ZONE} --cluster ${GKE_CLUSTER_NAME} \
+  --num-nodes 1 --min-nodes 1 --max-nodes 2 --enable-autoscaling
+```
 
 ## Install NVIDIA GPU device drivers
-After creating a GKE cluster with GPU, you need to install NVIDIA's device drivers on the nodes. Google provides a DaemonSet that you can apply to install the drivers. To deploy the installation [DaemonSet](https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/cos/daemonset-preloaded.yaml) and install the default GPU driver version, run the following command:
+After creating a GKE cluster with GPU, you need to install NVIDIA's device drivers on the nodes. Google provides a DaemonSet that you can apply to install the drivers. To deploy the installation [DaemonSet](https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/ubuntu/daemonset-preloaded.yaml) and install the default GPU driver version, run the following command:
 ```
-kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/cos/daemonset-preloaded.yaml
+kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/ubuntu/daemonset-preloaded.yaml
 ```
 
 
